@@ -1,0 +1,18 @@
+{
+  "name": "step-2-slash-commands",
+  "version": "1.0.0",
+  "description": "Workshop Step 2: Custom slash commands for documentation workflows. Provides commands to invoke the documentation agent with specific tasks like initial-doc, update-doc, and feature-with-doc.",
+  "author": {
+    "name": "Per Schulte",
+    "email": "per@example.com"
+  },
+  "homepage": "https://github.com/perschulte/agentic-coding-workshop",
+  "license": "MIT",
+  "keywords": [
+    "workshop",
+    "step-2",
+    "slash-commands",
+    "documentation",
+    "workflow"
+  ]
+}

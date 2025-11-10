@@ -1,0 +1,19 @@
+{
+  "name": "step-1-documentation-expert",
+  "version": "1.0.0",
+  "description": "Workshop Step 1: A dual-mode documentation expert agent that creates both hands-on operational and architectural documentation",
+  "author": {
+    "name": "Per Schulte",
+    "email": "per@example.com"
+  },
+  "keywords": [
+    "workshop",
+    "step-1",
+    "documentation",
+    "architecture",
+    "ADR",
+    "agent"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/perschulte/agentic-coding-workshop"
+}

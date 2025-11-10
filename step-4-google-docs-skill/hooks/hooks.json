@@ -1,0 +1,17 @@
+{
+  "description": "Automatic documentation generation on git commits",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/detect_commit.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "perschulte-plugins",
+  "description": "Per Schulte's Claude Code Plugins",
+  "owner": {
+    "name": "Per Schulte",
+    "email": "per@example.com"
+  },
+  "plugins": [
+    {
+      "name": "step-1-documentation-expert",
+      "source": "./step-1-documentation-expert",
+      "version": "1.0.0",
+      "description": "Workshop Step 1: Dual-mode documentation expert agent for operational and architectural documentation",
+      "tags": ["workshop", "step-1", "documentation", "agent", "architecture", "ADR"],
+      "category": "agents"
+    },
+    {
+      "name": "step-2-slash-commands",
+      "source": "./step-2-slash-commands",
+      "version": "1.0.0",
+      "description": "Workshop Step 2: Custom slash commands for streamlined documentation workflows",
+      "tags": ["workshop", "step-2", "slash-commands", "documentation", "workflow"],
+      "category": "commands"
+    },
+    {
+      "name": "step-3-hooks",
+      "source": "./step-3-hooks",
+      "version": "1.0.0",
+      "description": "Workshop Step 3: Post-tool-use hooks for automatic documentation on git commits",
+      "tags": ["workshop", "step-3", "hooks", "git", "automation"],
+      "category": "hooks"
+    },
+    {
+      "name": "step-4-google-docs-skill",
+      "source": "./step-4-google-docs-skill",
+      "version": "1.0.0",
+      "description": "Workshop Step 4: Skill for external Google Docs integration with multi-language code analysis",
+      "tags": ["workshop", "step-4", "skill", "google-docs", "integration"],
+      "category": "skills"
+    }
+  ]
+}

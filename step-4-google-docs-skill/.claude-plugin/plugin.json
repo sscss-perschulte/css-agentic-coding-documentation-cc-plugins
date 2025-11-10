@@ -1,0 +1,19 @@
+{
+  "name": "step-4-google-docs-skill",
+  "version": "1.0.0",
+  "description": "Workshop Step 4: Skill for external Google Docs integration. Automatically generates and updates software documentation in Google Docs with multi-language code analysis.",
+  "author": {
+    "name": "Per Schulte",
+    "email": "per@example.com"
+  },
+  "homepage": "https://github.com/perschulte/agentic-coding-workshop",
+  "license": "MIT",
+  "keywords": [
+    "workshop",
+    "step-4",
+    "skill",
+    "google-docs",
+    "documentation",
+    "automation"
+  ]
+}

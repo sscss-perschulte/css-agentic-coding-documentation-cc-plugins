@@ -1,0 +1,35 @@
+# Credentials and tokens
+credentials.json
+token.pickle
+token.json
+*.pem
+*.key
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Local config
+.claude/doc_context.json
