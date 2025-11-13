@@ -8,6 +8,15 @@ allowed-tools: [Read, Bash, Grep, Glob]
 
 This skill analyzes your codebase and updates Google Docs documentation intelligently.
 
+## Step 0: Install Dependencies (First Time Only)
+
+**Check if Google API libraries are installed:**
+```bash
+python3 -c "import google.oauth2.credentials" 2>/dev/null || pip3 install -r "${CLAUDE_PLUGIN_ROOT}/requirements.txt"
+```
+
+This installs the required Google Docs API dependencies if not already present.
+
 ## Step 1: Analyze the Codebase
 
 **Find recent changes:**
