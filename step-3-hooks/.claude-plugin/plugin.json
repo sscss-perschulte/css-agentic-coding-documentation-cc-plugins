@@ -4,7 +4,7 @@
   "description": "Workshop Step 3: PostToolUse hooks that detect code commits and AUTOMATICALLY update documentation using the update-doc-agent. Shows proactive automation with intelligent filtering to prevent loops.",
   "author": {
     "name": "Per Schulte",
-    "email": "per@example.com"
+    "email": "per.schulte@soprasteria.com"
   },
   "keywords": [
     "workshop",

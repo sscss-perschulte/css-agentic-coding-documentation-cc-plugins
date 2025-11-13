@@ -1,6 +1,6 @@
-# Agentic Coding Workshop - Plugin Marketplace
+# CSS Agentic Coding Documentation - Claude Code Plugins
 
-This marketplace contains plugins for the "Agentic Coding Workshop" demonstrating progressive automation of documentation workflows with Claude Code.
+This marketplace contains plugins for the "CSS Agentic Coding Documentation Workshop" demonstrating progressive automation of documentation workflows with Claude Code.
 
 ## Workshop Overview
 
@@ -25,25 +25,23 @@ A dual-mode documentation expert agent that creates both hands-on operational do
 
 **Installation:**
 ```
-/plugin install step-1-documentation-expert@perschulte-plugins
+/plugin install step-1-documentation-expert@css-agentic-coding-documentation-cc-plugins
 ```
 
 ### Step 2: Slash Commands (v1.0.0)
 
 Custom slash commands for streamlined documentation workflows.
 
-**Planned Commands:**
+**Commands:**
 - `/initial-doc` - Create initial documentation
 - `/update-doc [topic]` - Update existing docs
 - `/feature-with-doc` - Feature development + documentation
 - `/doc-adr` - Create Architecture Decision Record
 - `/doc-runbook` - Create operational runbook
 
-**Status:** Placeholder - To be implemented during workshop
-
 **Installation:**
 ```
-/plugin install step-2-slash-commands@perschulte-plugins
+/plugin install step-2-slash-commands@css-agentic-coding-documentation-cc-plugins
 ```
 
 ### Step 3: Hooks for Auto-Documentation (v1.0.0)
@@ -51,51 +49,49 @@ Custom slash commands for streamlined documentation workflows.
 Post-tool-use hooks that automatically trigger documentation updates after git commits.
 
 **Features:**
-- Non-blocking background documentation
-- Smart git commit detection
-- Deduplication with slash commands
-- Specialized agent for commit contexts
-
-**Status:** Placeholder - To be implemented during workshop
+- Automatic documentation suggestions on git commits
+- Smart Python file detection
+- Loop prevention (ignores commits with .md files)
+- Triggers update-doc-agent automatically
 
 **Installation:**
 ```
-/plugin install step-3-hooks@perschulte-plugins
+/plugin install step-3-hooks@css-agentic-coding-documentation-cc-plugins
 ```
 
 ### Step 4: Google Docs Integration Skill (v1.0.0)
 
-Skill for external Google Docs integration with multi-language code analysis.
+Simplified skill for Google Docs integration focused on two key documents.
 
 **Features:**
-- Automatic Google Docs generation and updates
-- Multi-language support (Python, JS/TS, Java, Go, Rust, C/C++)
-- Parallel doc updates with sub-agents
-- AST-based code analysis
+- Creates/updates two Google Docs: OPERATIONS and ARCHITECTURE
+- Hook-based automatic triggering on commits
+- Manual trigger via `/update-docs` slash command
+- Direct Google Docs API integration (no AST analysis)
 
 **Installation:**
 ```
-/plugin install step-4-google-docs-skill@perschulte-plugins
+/plugin install step-4-google-docs-skill@css-agentic-coding-documentation-cc-plugins
 ```
 
 **Additional Setup Required:**
 1. Create Google Cloud project
 2. Enable Google Docs API
-3. Download OAuth credentials as `credentials.json`
+3. Download OAuth credentials as `.workshop-setup/credentials.json`
 4. Install Python dependencies: `pip install -r requirements.txt`
 
 ## Getting Started
 
 ### 1. Add this marketplace to Claude Code
 
-```bash
-cd /path/to/your/project
-claude
+**Option A: Via Git URL (recommended)**
+```
+/marketplace add https://github.com/sscss-perschulte/css-agentic-coding-documentation-cc-plugins
 ```
 
-Then in Claude Code:
+**Option B: Via Local Path (for development)**
 ```
-/plugin marketplace add /Users/perschulte/Documents/dev/agentic_coding_workshops/claude-plugins-marketplace
+/marketplace add /Users/perschulte/Documents/dev/agentic_coding_workshops/claude-plugins-marketplace
 ```
 
 ### 2. Install plugins step-by-step
@@ -104,16 +100,16 @@ Follow the workshop progression:
 
 ```
 # Step 1
-/plugin install step-1-documentation-expert@perschulte-plugins
+/plugin install step-1-documentation-expert@css-agentic-coding-documentation-cc-plugins
 
-# Step 2 (during workshop)
-/plugin install step-2-slash-commands@perschulte-plugins
+# Step 2
+/plugin install step-2-slash-commands@css-agentic-coding-documentation-cc-plugins
 
-# Step 3 (during workshop)
-/plugin install step-3-hooks@perschulte-plugins
+# Step 3
+/plugin install step-3-hooks@css-agentic-coding-documentation-cc-plugins
 
-# Step 4 (during workshop)
-/plugin install step-4-google-docs-skill@perschulte-plugins
+# Step 4
+/plugin install step-4-google-docs-skill@css-agentic-coding-documentation-cc-plugins
 ```
 
 ## Managing Plugins
@@ -125,13 +121,13 @@ Follow the workshop progression:
 
 **Enable/disable a plugin:**
 ```
-/plugin disable step-1-documentation-expert@perschulte-plugins
-/plugin enable step-1-documentation-expert@perschulte-plugins
+/plugin disable step-1-documentation-expert@css-agentic-coding-documentation-cc-plugins
+/plugin enable step-1-documentation-expert@css-agentic-coding-documentation-cc-plugins
 ```
 
 **Uninstall:**
 ```
-/plugin uninstall step-1-documentation-expert@perschulte-plugins
+/plugin uninstall step-1-documentation-expert@css-agentic-coding-documentation-cc-plugins
 ```
 
 ## Workshop Progression
@@ -164,9 +160,20 @@ To modify a plugin during the workshop:
 1. Edit files in the marketplace directory
 2. Reinstall in your project:
    ```
-   /plugin uninstall step-X-plugin-name@perschulte-plugins
-   /plugin install step-X-plugin-name@perschulte-plugins
+   /plugin uninstall step-X-plugin-name@css-agentic-coding-documentation-cc-plugins
+   /plugin install step-X-plugin-name@css-agentic-coding-documentation-cc-plugins
    ```
+
+## Quick Reference
+
+**Marketplace Name:** `css-agentic-coding-documentation-cc-plugins`
+
+**GitHub Repository:** https://github.com/sscss-perschulte/css-agentic-coding-documentation-cc-plugins
+
+**Add Marketplace:**
+```
+/marketplace add https://github.com/sscss-perschulte/css-agentic-coding-documentation-cc-plugins
+```
 
 ## Support
 
