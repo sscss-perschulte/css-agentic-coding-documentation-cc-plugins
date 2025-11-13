@@ -1,40 +1,107 @@
 ---
 name: update-docs
 description: Updates Google Docs documentation for code changes. Creates OPERATIONS and ARCHITECTURE docs if they don't exist, otherwise updates them.
-allowed-tools: [Bash]
+allowed-tools: [Read, Bash, Grep, Glob]
 ---
 
 # Update Documentation Skill
 
-This skill automatically updates your Google Docs documentation based on recent code changes.
+This skill analyzes your codebase and updates Google Docs documentation intelligently.
 
-## What This Skill Does
+## Step 1: Analyze the Codebase
 
-**First Time:**
-- Creates two new Google Docs (OPERATIONS and ARCHITECTURE)
-- Initializes documentation with project overview
-- Saves Doc IDs to `.claude/docs_config.json`
-
-**Subsequent Times:**
-- Updates existing documents with new changes
-- Appends to existing content (doesn't overwrite)
-
-## Execution
-
-Run the documentation update script:
-
+**Find recent changes:**
 ```bash
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/update-docs/run.py"
+git log --oneline -5
+git diff HEAD~1 --name-only
 ```
 
-The script will:
-1. Authenticate with Google Docs (opens browser on first use)
-2. Analyze recent git changes
-3. Create or update OPERATIONS and ARCHITECTURE documents
-4. Display links to the updated documents
+**Read relevant code files** to understand what changed. Focus on:
+- New features or functionality
+- Bug fixes
+- Architecture changes
+- Configuration updates
 
-## Requirements
+## Step 2: Generate Documentation Content
 
-- Google OAuth credentials in `.workshop-setup/credentials.json`
-- Git repository with commit history
-- Python 3 with required packages (google-api-python-client, google-auth-httplib2, google-auth-oauthlib)
+Based on your analysis, create two types of documentation:
+
+### OPERATIONS Content (Hands-on)
+- How to use new features
+- Setup/installation steps
+- Commands and examples
+- Configuration instructions
+- Troubleshooting tips
+
+### ARCHITECTURE Content (Technical)
+- Design decisions and rationale
+- Component descriptions
+- Technical trade-offs
+- Implementation details
+- Why certain approaches were chosen
+
+Keep it concise, practical, and focused on WHY not just WHAT.
+
+## Step 3: Update Google Docs
+
+Use the Google Docs Manager to create or update documents:
+
+```python
+import sys
+from pathlib import Path
+
+# Add shared module to path
+sys.path.insert(0, str(Path('${CLAUDE_PLUGIN_ROOT}/skills/shared')))
+from google_docs_manager import GoogleDocsManager
+
+# Initialize manager (handles OAuth automatically)
+manager = GoogleDocsManager()
+
+# Check if this is first run
+import json
+config_path = Path('.claude/docs_config.json')
+
+if not config_path.exists():
+    # First run - create new documents
+    project_name = Path.cwd().name  # or get from git
+
+    ops_doc_id = manager.create_document(f"{project_name} - OPERATIONS")
+    arch_doc_id = manager.create_document(f"{project_name} - ARCHITECTURE")
+
+    # Save config
+    config = {
+        'operations_doc_id': ops_doc_id,
+        'architecture_doc_id': arch_doc_id,
+        'operations_url': f'https://docs.google.com/document/d/{ops_doc_id}/edit',
+        'architecture_url': f'https://docs.google.com/document/d/{arch_doc_id}/edit'
+    }
+
+    config_path.parent.mkdir(exist_ok=True)
+    with open(config_path, 'w') as f:
+        json.dump(config, f, indent=2)
+
+    # Add initial content
+    manager.append_text(ops_doc_id, operations_content)
+    manager.append_text(arch_doc_id, architecture_content)
+else:
+    # Update existing documents
+    with open(config_path) as f:
+        config = json.load(f)
+
+    # Append new content
+    manager.append_text(config['operations_doc_id'], operations_content)
+    manager.append_text(config['architecture_doc_id'], architecture_content)
+
+# Show the user the URLs
+print(f"📄 OPERATIONS: {config['operations_url']}")
+print(f"📄 ARCHITECTURE: {config['architecture_url']}")
+```
+
+**Important:** Replace `operations_content` and `architecture_content` with the documentation you generated in Step 2.
+
+## Output
+
+After updating the docs, provide the user with:
+- Links to both Google Docs
+- Brief summary of what was added
+- Confirmation that docs are ready for review
