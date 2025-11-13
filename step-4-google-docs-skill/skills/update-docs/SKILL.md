@@ -55,60 +55,13 @@ Based on your analysis, create two types of documentation:
 
 ## Step 3: Update Google Docs
 
-Use the Google Docs Manager to create or update documents:
+Execute the update script with your generated content:
 
-```python
-import sys
-from pathlib import Path
-
-# Add shared module to path
-sys.path.insert(0, str(Path('${CLAUDE_PLUGIN_ROOT}/skills/shared')))
-from google_docs_manager import GoogleDocsManager
-
-# Initialize manager (handles OAuth automatically)
-manager = GoogleDocsManager()
-
-# Check if this is first run
-import json
-config_path = Path('.claude/docs_config.json')
-
-if not config_path.exists():
-    # First run - create new documents
-    project_name = Path.cwd().name  # or get from git
-
-    ops_doc_id = manager.create_document(f"{project_name} - OPERATIONS")
-    arch_doc_id = manager.create_document(f"{project_name} - ARCHITECTURE")
-
-    # Save config
-    config = {
-        'operations_doc_id': ops_doc_id,
-        'architecture_doc_id': arch_doc_id,
-        'operations_url': f'https://docs.google.com/document/d/{ops_doc_id}/edit',
-        'architecture_url': f'https://docs.google.com/document/d/{arch_doc_id}/edit'
-    }
-
-    config_path.parent.mkdir(exist_ok=True)
-    with open(config_path, 'w') as f:
-        json.dump(config, f, indent=2)
-
-    # Add initial content
-    manager.append_text(ops_doc_id, operations_content)
-    manager.append_text(arch_doc_id, architecture_content)
-else:
-    # Update existing documents
-    with open(config_path) as f:
-        config = json.load(f)
-
-    # Append new content
-    manager.append_text(config['operations_doc_id'], operations_content)
-    manager.append_text(config['architecture_doc_id'], architecture_content)
-
-# Show the user the URLs
-print(f"📄 OPERATIONS: {config['operations_url']}")
-print(f"📄 ARCHITECTURE: {config['architecture_url']}")
+```bash
+python3 scripts/update_docs.py "$operations_content" "$architecture_content"
 ```
 
-**Important:** Replace `operations_content` and `architecture_content` with the documentation you generated in Step 2.
+**Important:** Replace `$operations_content` and `$architecture_content` with the actual documentation strings you generated in Step 2.
 
 ## Output
 
