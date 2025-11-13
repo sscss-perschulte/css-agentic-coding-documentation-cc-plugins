@@ -1,6 +1,6 @@
 {
-  "name": "perschulte-plugins",
-  "description": "Per Schulte's Claude Code Plugins",
+  "name": "css-agentic-coding-documentation-cc-plugins",
+  "description": "CSS Agentic Coding Documentation Plugins for Claude Code",
   "owner": {
     "name": "Per Schulte",
     "email": "per@example.com"

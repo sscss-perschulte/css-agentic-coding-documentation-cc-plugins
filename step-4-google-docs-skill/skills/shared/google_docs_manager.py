@@ -20,7 +20,7 @@ SCOPES = ['https://www.googleapis.com/auth/documents']
 class GoogleDocsManager:
     """Manager für Google Docs Operationen"""
 
-    def __init__(self, credentials_file='credentials.json'):
+    def __init__(self, credentials_file='.workshop-setup/credentials.json'):
         """
         Initialisiert den Google Docs Manager
 
@@ -28,6 +28,7 @@ class GoogleDocsManager:
             credentials_file: Pfad zur OAuth 2.0 Client ID JSON-Datei
         """
         self.credentials_file = credentials_file
+        self.token_file = '.workshop-setup/token.pickle'
         self.creds = None
         self.service = None
         self._authenticate()
@@ -35,8 +36,8 @@ class GoogleDocsManager:
     def _authenticate(self):
         """Authentifizierung mit Google API"""
         # Token aus pickle-Datei laden, falls vorhanden
-        if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
+        if os.path.exists(self.token_file):
+            with open(self.token_file, 'rb') as token:
                 self.creds = pickle.load(token)
 
         # Wenn keine gültigen Credentials vorhanden, neue anfordern
@@ -49,7 +50,7 @@ class GoogleDocsManager:
                 self.creds = flow.run_local_server(port=0)
 
             # Token speichern für zukünftige Verwendung
-            with open('token.pickle', 'wb') as token:
+            with open(self.token_file, 'wb') as token:
                 pickle.dump(self.creds, token)
 
         self.service = build('docs', 'v1', credentials=self.creds)

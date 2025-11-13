@@ -1,15 +1,13 @@
-# Google Docs Auto-Documentation Plugin
+# Step 4: Google Docs Skill
 
-A Claude Code plugin that automatically generates and updates software documentation in Google Docs when you commit code changes.
+A simplified Claude Code plugin that automatically updates Google Docs documentation when you commit code changes.
 
 ## Features
 
 - 🔄 **Automatic Documentation**: Triggers on git commits via Claude Code hooks
-- 📚 **Multi-Language Support**: Analyzes Python, JavaScript, TypeScript, Java, Go, Rust, and more
-- ⚡ **Non-Blocking**: Runs in background, doesn't interrupt your workflow
-- 🎯 **Smart Analysis**: Deterministic code parsing with AST for precise documentation
-- 📝 **Changelog Management**: Automatically maintains documentation changelog
-- 🚀 **Parallel Processing**: Uses sub-agents to update multiple docs simultaneously
+- 📚 **Two Document Types**: OPERATIONS (how-to) and ARCHITECTURE (design decisions)
+- ⚡ **Simple and Direct**: Uses Google Docs Manager directly, no complex AST analysis
+- 📝 **Manual Trigger**: Can also be triggered with `/update-docs` slash command
 
 ## How It Works
 
@@ -18,14 +16,23 @@ You: "Commit the changes"
         ↓
 Claude Code executes git commit
         ↓
-Hook detects commit and analyzes changed files
+Hook detects commit with Python file changes
         ↓
-Starts background Claude process
+Claude suggests using update-docs skill
         ↓
-You continue working immediately
-        ↓
-Background: Updates Google Docs with new documentation
+Skill creates/updates two Google Docs:
+  - OPERATIONS (hands-on usage)
+  - ARCHITECTURE (design decisions)
 ```
+
+## What Makes This Different
+
+This is a **simplified version** compared to complex documentation tools:
+- ✅ No AST parsing or code analysis
+- ✅ No background processes
+- ✅ Just two focused documents (OPERATIONS + ARCHITECTURE)
+- ✅ Direct integration with Google Docs API
+- ✅ Based on the same hook pattern as Step 3
 
 ## Installation
 
@@ -48,93 +55,73 @@ Background: Updates Google Docs with new documentation
    - Click "Create Credentials" > "OAuth client ID"
    - Choose "Desktop app"
    - Download credentials
-5. Save downloaded file as `credentials.json` in your project root
+5. Save downloaded file as `.workshop-setup/credentials.json`
 6. Add yourself as test user:
    - Go to "OAuth consent screen"
    - Scroll to "Test users"
    - Add your Google email address
 
-### Install Plugin
-
-```bash
-# Option 1: From marketplace (when published)
-/plugin install google-docs-autodoc
-
-# Option 2: Local installation (development)
-# Clone this repository to your project
-# The plugin structure is already in place
-```
-
 ### Install Python Dependencies
 
 ```bash
-# If you have a virtual environment
-source venv/bin/activate
 pip install -r requirements.txt
-
-# Or globally
-pip3 install -r requirements.txt
 ```
 
 ## Usage
 
-### First Time Setup
+### Automatic (via Hook)
 
-On first commit, the plugin will:
-1. Ask you to authenticate with Google (opens browser)
-2. Create 4 Google Docs:
-   - Master Document (index with links)
-   - Architecture & Design Document
-   - API Reference Document
-   - Module Documentation
-3. Save Doc IDs to `.claude/docs_config.json`
-
-### Daily Workflow
+When you commit Python code changes:
 
 ```bash
-$ claude
-
-You: Implement user authentication with JWT
-
-Claude: [creates auth.py, routes.py, etc.]
-
 You: Commit the changes
 
-Claude: [executes git commit]
+📚 Code commit detected with Python file changes: auth.py, routes.py
 
-📚 Git commit detected - starting documentation update...
-   ✓ Analyzed: 3 file(s)
-   📝 Documentation running in background
-   Log: tail -f /tmp/claude_docs.log
-
-Claude: ✓ Commit successful
-
-You: [continue working immediately...]
-
-# 30-60 seconds later, background process completes:
-[Background] ✓ Documentation updated
-             📚 https://docs.google.com/document/d/...
+AUTOMATIC DOCUMENTATION UPDATE:
+Use the update-docs skill to update the Google Docs documentation for these changes.
 ```
+
+Claude will then use the `update-docs` skill to update the documentation.
+
+### Manual (via Slash Command)
+
+You can also trigger documentation updates manually:
+
+```bash
+/update-docs
+```
+
+### First Time
+
+On first use, the skill will:
+1. Ask you to authenticate with Google (opens browser)
+2. Create 2 Google Docs:
+   - **OPERATIONS** - Hands-on usage documentation
+   - **ARCHITECTURE** - Design decisions and technical documentation
+3. Save Doc IDs to `.claude/docs_config.json`
+
+### Subsequent Uses
+
+The skill will append new content to the existing documents.
 
 ## Plugin Structure
 
 ```
-google-docs-autodoc/
-├── .claude-plugin/
-│   └── plugin.json              # Plugin manifest
+step-4-google-docs-skill/
 ├── hooks/
-│   ├── hooks.json               # Hook configuration
-│   └── detect_commit.py         # Commit detection script
+│   ├── hooks.json               # Hook configuration (from Step 3)
+│   └── detect_commit.py         # Simple commit detection (from Step 3)
 ├── skills/
 │   ├── update-docs/
-│   │   └── SKILL.md            # Documentation update skill
+│   │   └── SKILL.md            # Simplified documentation skill
 │   └── shared/
-│       ├── google_docs_manager.py  # Google Docs API wrapper
-│       └── code_analyzer.py        # Multi-language code analyzer
+│       └── google_docs_manager.py  # Google Docs API wrapper
+├── commands/
+│   └── update-docs.md          # Slash command for manual updates
 ├── requirements.txt             # Python dependencies
 ├── .claude/
-│   └── docs_config.json        # Generated: Doc IDs and mappings
-├── credentials.json            # Your Google API credentials (not in git)
+│   └── docs_config.json        # Generated: Doc IDs
 └── README.md                   # This file
 ```
 
@@ -146,101 +133,59 @@ Auto-generated on first run. Contains:
 
 ```json
 {
-  "initialized": true,
-  "google_docs": {
-    "master_doc_id": "1ABC...",
-    "architecture_doc_id": "1DEF...",
-    "api_doc_id": "1GHI...",
-    "modules_doc_id": "1JKL..."
-  },
-  "section_mappings": {
-    "src/auth/jwt_handler.py": {
-      "doc_id": "1GHI...",
-      "section_title": "JWT Authentication"
-    }
-  },
-  "last_documented_commit": "abc123"
+  "operations_doc_id": "1ABC...",
+  "architecture_doc_id": "1DEF...",
+  "operations_url": "https://docs.google.com/document/d/1ABC.../edit",
+  "architecture_url": "https://docs.google.com/document/d/1DEF.../edit"
 }
 ```
 
-## Supported Languages
+## How It Works
 
-The plugin automatically detects and analyzes:
+1. **Commit Detection**: Hook watches for `git commit` commands with Python files
+2. **Claude Suggestion**: Hook suggests using the update-docs skill
+3. **Skill Execution**:
+   - Checks if docs exist (reads `.claude/docs_config.json`)
+   - If first run: Creates two Google Docs
+   - Analyzes recent changes using git
+   - Generates clear, human-readable documentation
+   - Updates OPERATIONS and ARCHITECTURE docs
+   - Shows links to updated documents
 
-- **Python**: Classes, functions, decorators, docstrings, type hints
-- **JavaScript/TypeScript**: Functions, classes, interfaces, types, exports
-- **Java**: Classes, interfaces, packages, inheritance
-- **Go**: Packages, functions, structs
-- **Rust**: Modules, functions, traits
-- **C/C++**: Functions, classes, headers
+## Documentation Templates
 
-## How Documentation is Generated
+### OPERATIONS Document
+- Project overview
+- Setup instructions
+- Usage examples
+- Commands and workflows
+- Recent changes
 
-1. **Commit Detection**: Hook watches for `git commit` commands
-2. **Code Analysis**: Parses committed files using language-specific analyzers
-3. **Context Building**: Creates comprehensive context with:
-   - Changed files and their structure
-   - Dependencies and imports
-   - Commit message and hash
-   - Existing documentation mappings
-4. **Background Processing**: Launches separate Claude Code instance
-5. **Skill Execution**: `update-docs` skill:
-   - Reads context
-   - Generates human-readable documentation
-   - Updates relevant Google Docs sections
-   - Appends changelog entry
-6. **Parallel Updates**: Uses sub-agents to update multiple docs simultaneously
-
-## Changelog Format
-
-The plugin maintains a changelog in the Master Document:
-
-```markdown
-## [2025-11-05 14:30] - Commit: abc123
-
-### Commit Message
-Add user authentication service
-
-### Changed Files
-- `src/auth/jwt_handler.py`: Added JWTHandler class with 3 methods
-- `src/api/auth_routes.py`: Added /login and /logout endpoints
-- `src/models/user.py`: Added password_hash field
-
-### Documentation Updates
-- Architecture Doc: Added "Authentication Flow" section
-- API Reference: Documented /login and /logout endpoints
-- Module Docs: Added JWT Handler module documentation
-
-### Impact
-- Classes added: 1
-- Functions added: 5
-- API endpoints added: 2
-```
+### ARCHITECTURE Document
+- High-level architecture
+- Design decisions and rationale
+- Component descriptions
+- Technical considerations
+- Change history
 
 ## Troubleshooting
 
 ### "credentials.json not found"
 - Ensure you've downloaded OAuth credentials from Google Cloud Console
-- Save as `credentials.json` in project root
+- Save as `.workshop-setup/credentials.json`
 
 ### "Access denied" or "Permission denied"
 - Check that Google Docs API is enabled in your project
 - Verify you're added as a test user in OAuth consent screen
 
 ### Hook not triggering
-- Verify `.claude/settings.json` contains hook configuration
+- Verify `hooks/hooks.json` exists
 - Check that `hooks/detect_commit.py` is executable: `chmod +x hooks/detect_commit.py`
-- Look for hook output after commit: "📚 Git commit detected..."
+- Look for hook output after commit: "📚 Code commit detected..."
 
-### Background process not running
-- Check log file: `tail -f /tmp/claude_docs.log`
-- Ensure `claude` CLI is in your PATH
-- Verify Python dependencies are installed
-
-### Documentation not updating
-- Check `.claude/docs_config.json` exists and contains doc IDs
-- Verify Google Docs are accessible with your account
-- Check `/tmp/doc_context.json` for analysis results
+### Skill not found
+- Ensure `skills/update-docs/SKILL.md` exists
+- Check that skill name in SKILL.md frontmatter is `update-docs`
 
 ## Development
 
@@ -251,58 +196,36 @@ Add user authentication service
 echo '{"tool_name":"Bash","tool_input":{"command":"git commit -m test"}}' | ./hooks/detect_commit.py
 ```
 
-### Testing Code Analyzer
-
-```bash
-# Analyze a Python file
-python skills/shared/code_analyzer.py path/to/file.py
-
-# Analyze a TypeScript file
-python skills/shared/code_analyzer.py path/to/file.ts
-```
-
 ### Manual Skill Invocation
 
 ```bash
-claude "Update documentation using the update-docs skill with context from /tmp/doc_context.json"
+# Via slash command
+/update-docs
+
+# Or direct invocation
+Use the update-docs skill to update documentation
 ```
 
-## Roadmap
+## Learning Path
 
-- [ ] Support for more languages (Swift, Kotlin, Ruby)
-- [ ] Diagram generation (architecture, sequence diagrams)
-- [ ] Integration with other documentation platforms (Notion, Confluence)
-- [ ] Smart diff detection (only document meaningful changes)
-- [ ] Team collaboration features (doc ownership, review process)
-- [ ] CLI tool for manual documentation generation
+This is **Step 4** in the Claude Code workshop series:
 
-## Contributing
+1. **Step 1**: Basic plugin structure
+2. **Step 2**: Slash commands
+3. **Step 3**: Hooks for automation
+4. **Step 4**: Skills for complex tasks (this step)
 
-Contributions welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+## Key Concepts Demonstrated
+
+- **Hooks**: Automatic triggering on git commits
+- **Skills**: Complex multi-step workflows with Google API integration
+- **Slash Commands**: Manual trigger alternative
+- **Integration**: Combining hooks + skills + external APIs
 
 ## License
 
-MIT License - see LICENSE file for details
-
-## Support
-
-- **Documentation**: [Claude Code Docs](https://docs.claude.com/claude-code)
-- **Issues**: [GitHub Issues](https://github.com/perschulte/google-docs-autodoc/issues)
-- **Skills Guide**: [Skills Documentation](https://docs.claude.com/claude-code/skills)
-- **Hooks Guide**: [Hooks Documentation](https://docs.claude.com/claude-code/hooks)
-
-## Acknowledgments
-
-Built with:
-- [Claude Code](https://claude.ai/code) by Anthropic
-- [Google Docs API](https://developers.google.com/docs/api)
-- Python AST for code analysis
+MIT License
 
 ---
 
-**Made with Claude Code** 🤖
+**Made for Claude Code Workshops** 🤖

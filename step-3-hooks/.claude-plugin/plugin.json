@@ -15,6 +15,5 @@
     "documentation"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/perschulte/agentic-coding-workshop",
-  "hooks": "./hooks/hooks.json"
+  "homepage": "https://github.com/perschulte/agentic-coding-workshop"
 }
