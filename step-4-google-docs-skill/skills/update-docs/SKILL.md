@@ -33,23 +33,25 @@ git diff HEAD~1 --name-only
 
 ## Step 2: Generate Documentation Content
 
+**IMPORTANT: Keep documentation BRIEF (150-250 words per document max)**
+
 Based on your analysis, create two types of documentation:
 
-### OPERATIONS Content (Hands-on)
-- How to use new features
-- Setup/installation steps
-- Commands and examples
-- Configuration instructions
-- Troubleshooting tips
+### OPERATIONS Content (Hands-on, ~150-200 words)
+- How to use new features (1-2 sentences)
+- Key commands (bullet points only)
+- Basic setup steps (if applicable)
 
-### ARCHITECTURE Content (Technical)
-- Design decisions and rationale
-- Component descriptions
-- Technical trade-offs
-- Implementation details
-- Why certain approaches were chosen
+### ARCHITECTURE Content (Technical, ~150-200 words)
+- Main design decision and WHY (1-2 sentences)
+- Key components (brief list)
+- Notable trade-offs (if any)
 
-Keep it concise, practical, and focused on WHY not just WHAT.
+**Focus on:**
+- One paragraph per section maximum
+- Bullet points over long explanations
+- WHY over WHAT
+- Recent changes only (not full project documentation)
 
 ## Step 3: Update Google Docs
 
