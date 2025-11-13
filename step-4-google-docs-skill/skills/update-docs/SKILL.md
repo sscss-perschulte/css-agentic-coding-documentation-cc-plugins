@@ -55,13 +55,19 @@ Based on your analysis, create two types of documentation:
 
 ## Step 3: Update Google Docs
 
-Execute the update script with your generated content:
+Execute the update script by piping JSON with your generated content:
 
 ```bash
-python3 scripts/update_docs.py "$operations_content" "$architecture_content"
+echo '{
+  "operations": "YOUR_OPERATIONS_CONTENT_HERE",
+  "architecture": "YOUR_ARCHITECTURE_CONTENT_HERE"
+}' | python3 "${CLAUDE_PLUGIN_ROOT}/skills/update-docs/scripts/update_docs.py"
 ```
 
-**Important:** Replace `$operations_content` and `$architecture_content` with the actual documentation strings you generated in Step 2.
+**Important:**
+- Replace `YOUR_OPERATIONS_CONTENT_HERE` and `YOUR_ARCHITECTURE_CONTENT_HERE` with the actual documentation you generated in Step 2
+- Escape quotes in the content properly for JSON
+- Use `${CLAUDE_PLUGIN_ROOT}` to reference the plugin directory
 
 ## Output
 

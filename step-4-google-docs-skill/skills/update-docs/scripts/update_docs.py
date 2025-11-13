@@ -15,12 +15,17 @@ from google_docs_manager import GoogleDocsManager
 
 
 def main():
-    if len(sys.argv) < 3:
-        print("Usage: python update_docs.py <operations_content> <architecture_content>")
+    # Read content from stdin (JSON format)
+    import json as json_module
+    try:
+        data = json_module.load(sys.stdin)
+        operations_content = data.get('operations', '')
+        architecture_content = data.get('architecture', '')
+    except Exception as e:
+        print(f"Error: Expected JSON input via stdin with 'operations' and 'architecture' keys")
+        print(f'Example: echo \'{{"operations": "...", "architecture": "..."}}\' | python update_docs.py')
+        print(f"Error details: {e}")
         sys.exit(1)
-
-    operations_content = sys.argv[1]
-    architecture_content = sys.argv[2]
 
     # Initialize manager
     manager = GoogleDocsManager()
